@@ -14,7 +14,7 @@ export const SDKSnippet = ({ agent }: { agent: Agent }) => {
   const [snippets, setSnippets] = useState<{ py: string; js: string; cur: string }>({ py: "", js: "", cur: "" });
 
   const inputJson = agent.exampleInput ? JSON.stringify(agent.exampleInput) : "{}";
-  const apiKey = user ? "API_KEY_HERE" : "YOUR_API_KEY"; // Real integration would use db keys
+  const apiKey = user ? "API_KEY_HERE" : "YOUR_API_KEY";
 
   const pyCode = `import requests
 

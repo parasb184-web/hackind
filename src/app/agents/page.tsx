@@ -6,6 +6,81 @@ import { FilterSidebar } from "@/components/FilterSidebar";
 import { useQueryState, parseAsArrayOf, parseAsString, parseAsFloat } from "nuqs";
 import { useMemo, Suspense } from "react";
 import { SearchBar } from "@/components/SearchBar";
+import { Agent } from "@/lib/types";
+
+const SEARCH_SYNONYMS: Record<string, string[]> = {
+  study: ["research", "analysis", "summarization", "translation", "data-extraction", "education", "learning"],
+  research: ["study", "analysis", "summarization", "data-extraction"],
+  learn: ["study", "education", "translation", "summarization"],
+  write: ["content-creation", "marketing", "generative", "copy"],
+  build: ["code-generation", "frontend", "automation", "productivity"],
+  code: ["code-review", "code-generation", "frontend", "testing"],
+  data: ["data-extraction", "analytics", "database", "summarization"],
+  audio: ["speech-to-text", "transcription", "voice", "nlp"],
+  image: ["computer-vision", "analysis", "healthcare"],
+  support: ["customer-support", "automation", "nlp"],
+};
+
+const tokenize = (value: string) =>
+  value
+    .toLowerCase()
+    .split(/[^a-z0-9+#.-]+/)
+    .filter(Boolean);
+
+const getSearchScore = (agent: Agent, query: string) => {
+  if (!query.trim()) return 1;
+
+  const normalizedQuery = query.toLowerCase().trim();
+  const queryTokens = tokenize(normalizedQuery);
+  const expandedTokens = new Set(
+    queryTokens.flatMap((token) => [token, ...(SEARCH_SYNONYMS[token] || [])])
+  );
+
+  const searchableParts = [
+    agent.name,
+    agent.description,
+    agent.creatorUsername,
+    agent.capabilityTags.join(" "),
+    agent.supportedLanguages.join(" "),
+  ];
+
+  const searchableText = searchableParts.join(" ").toLowerCase();
+  let score = 0;
+
+  if (searchableText.includes(normalizedQuery)) {
+    score += 12;
+  }
+
+  for (const token of expandedTokens) {
+    if (searchableText.includes(token)) {
+      score += queryTokens.includes(token) ? 4 : 2;
+    }
+  }
+
+  for (const tag of agent.capabilityTags) {
+    const normalizedTag = tag.toLowerCase();
+    if (expandedTokens.has(normalizedTag)) {
+      score += 5;
+    }
+    if (queryTokens.some((token) => normalizedTag.includes(token))) {
+      score += 3;
+    }
+  }
+
+  for (const language of agent.supportedLanguages) {
+    if (expandedTokens.has(language.toLowerCase())) {
+      score += 2;
+    }
+  }
+
+  return score;
+};
+
+const hasStrongQueryMatch = (score: number, query: string) => {
+  const tokenCount = tokenize(query).length;
+  if (tokenCount <= 1) return score >= 4;
+  return score >= 6;
+};
 
 function AgentsContent() {
   const { data: agents = [], isLoading } = useAgents();
@@ -13,35 +88,41 @@ function AgentsContent() {
   const [q] = useQueryState("q", { defaultValue: "" });
   const [tags] = useQueryState("tags", parseAsArrayOf(parseAsString).withDefault([]));
   const [langs] = useQueryState("langs", parseAsArrayOf(parseAsString).withDefault([]));
-  const [maxCost] = useQueryState("cost", parseAsFloat.withDefault(0.1));
+  const [maxCost] = useQueryState("cost", parseAsFloat.withDefault(1.0));
   const [minTrust] = useQueryState("trust", parseAsFloat.withDefault(0));
   const [sort] = useQueryState("sort", parseAsString.withDefault("newest"));
 
   const filteredAgents = useMemo(() => {
-    let result = agents.filter(a => {
-      // Name/desc search
-      if (q && !a.name.toLowerCase().includes(q.toLowerCase()) && !a.description.toLowerCase().includes(q.toLowerCase())) return false;
+    const scoredAgents = agents
+      .map((agent) => ({
+        agent,
+        searchScore: getSearchScore(agent, q),
+      }))
+      .filter(({ agent, searchScore }) => {
+        if (agent.costPerCall > maxCost) return false;
+        if (agent.trustScore < minTrust) return false;
+        if (tags.length > 0 && !tags.some((tag) => agent.capabilityTags.includes(tag))) return false;
+        if (langs.length > 0 && !langs.some((lang) => agent.supportedLanguages.includes(lang))) return false;
+        if (q && !hasStrongQueryMatch(searchScore, q)) return false;
+        return true;
+      });
 
-      // Cost filter
-      if (a.costPerCall > maxCost) return false;
+    const result = scoredAgents
+      .sort((a, b) => b.searchScore - a.searchScore)
+      .map(({ agent }) => agent);
 
-      // Trust score filter
-      if (a.trustScore < minTrust) return false;
-
-      // Tags filter (must encompass selected tags, or if none selected then pass)
-      if (tags.length > 0 && !tags.some(t => a.capabilityTags.includes(t))) return false;
-
-      // Languages filter
-      if (langs.length > 0 && !langs.some(l => a.supportedLanguages.includes(l))) return false;
-
-      return true;
-    });
-
-    // Sorting
-    if (sort === "newest") result = result.sort((a, b) => b.createdAt?.seconds - a.createdAt?.seconds);
-    if (sort === "used") result = result.sort((a, b) => b.totalCalls - a.totalCalls);
-    if (sort === "rated") result = result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-    if (sort === "cost") result = result.sort((a, b) => a.costPerCall - b.costPerCall);
+    if (sort === "newest") {
+      return result.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+    }
+    if (sort === "used") {
+      return result.sort((a, b) => (b.totalCalls || 0) - (a.totalCalls || 0));
+    }
+    if (sort === "rated") {
+      return result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+    }
+    if (sort === "cost") {
+      return result.sort((a, b) => (a.costPerCall || 0) - (b.costPerCall || 0));
+    }
 
     return result;
   }, [agents, q, tags, langs, maxCost, minTrust, sort]);

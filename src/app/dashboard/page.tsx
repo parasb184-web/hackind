@@ -36,7 +36,7 @@ export default function DashboardPage() {
   }
 
   const myAgents = agents.filter(a => a.creatorId === user.uid);
-  const totalEarnings = myAgents.reduce((acc, curr) => acc + (curr.totalCalls * curr.costPerCall), 0);
+  const totalEarnings = myAgents.reduce((acc, curr) => acc + ((curr.totalCalls || 0) * (curr.costPerCall || 0)), 0);
 
   const createKey = async () => {
     const r = await fetch("/api/keys", {
@@ -67,7 +67,7 @@ export default function DashboardPage() {
         <div className="flex items-center gap-6">
           <img src={githubProfile.avatarUrl} className="w-20 h-20 rounded-full border border-white/10" alt="" />
           <div>
-            <h1 className="text-3xl font-bold">Welcome back, {githubProfile.githubUsername}</h1>
+            <h1 className="text-3xl font-bold">{githubProfile.githubUsername} Dashboard</h1>
             <p className="text-muted-foreground mt-1 text-sm bg-white/5 inline-flex px-3 rounded py-1 items-center gap-2 border border-white/5">
               <CheckCircle2 className="w-4 h-4 text-green-500" /> Developer Account Verified
             </p>
@@ -86,7 +86,7 @@ export default function DashboardPage() {
         </div>
         <div className="p-6 bg-[#111] border border-white/10 rounded-xl relative overflow-hidden group">
           <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-2">Global Usage</p>
-          <div className="text-4xl font-mono">{myAgents.reduce((a, c) => a + c.totalCalls, 0).toLocaleString()} <span className="text-sm text-foreground/50">calls</span></div>
+          <div className="text-4xl font-mono">{myAgents.reduce((a, c) => a + (c.totalCalls || 0), 0).toLocaleString()} <span className="text-sm text-foreground/50">calls</span></div>
         </div>
       </div>
 
@@ -141,9 +141,9 @@ export default function DashboardPage() {
       {showKeyModal && (
         <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
           <div className="bg-zinc-900 border border-white/10 rounded-2xl p-6 w-full max-w-lg">
-            <h3 className="text-xl font-bold mb-2">Save your API Key!</h3>
+            <h3 className="text-xl font-bold mb-2">API Key Created</h3>
             <p className="text-sm text-yellow-500 mb-6 bg-yellow-500/10 border border-yellow-500/20 p-3 rounded-lg">
-              Please copy this key immediately. You won't be able to see it again.
+              Copy and store this key securely. For security reasons, it will only be shown once.
             </p>
             <div className="flex gap-2">
               <input readOnly value={showKeyModal} className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 font-mono text-blue-400" />
@@ -154,7 +154,7 @@ export default function DashboardPage() {
                 <Copy className="w-4 h-4" />
               </Button>
             </div>
-            <Button onClick={() => setShowKeyModal(null)} className="w-full mt-6">I have saved it</Button>
+            <Button onClick={() => setShowKeyModal(null)} className="w-full mt-6">Done</Button>
           </div>
         </div>
       )}

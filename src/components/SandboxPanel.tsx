@@ -52,7 +52,7 @@ export const SandboxPanel = ({ agent }: { agent: Agent }) => {
     <div className="flex flex-col h-[600px] border border-white/10 rounded-xl overflow-hidden bg-black">
       <div className="flex items-center justify-between px-4 py-3 bg-white/5 border-b border-white/10">
         <div className="flex items-center gap-4">
-          <span className="font-semibold text-sm">Live Sandbox</span>
+          <span className="font-semibold text-sm">Sandbox</span>
           {latency !== null && (
             <span className="text-xs text-muted-foreground flex items-center gap-1 bg-white/5 px-2 py-1 rounded-md">
               <CheckCircle2 className="w-3 h-3 text-green-500" />
@@ -69,7 +69,7 @@ export const SandboxPanel = ({ agent }: { agent: Agent }) => {
         <div className="flex items-center gap-2">
           <input
             type="password"
-            placeholder="Enter API Key (ah_...)"
+            placeholder="API key"
             value={apiKey}
             onChange={(e) => setApiKey(e.target.value)}
             className="w-48 bg-black/50 border border-white/10 rounded-md px-3 h-8 text-xs font-mono focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-blue-500"
@@ -100,7 +100,7 @@ export const SandboxPanel = ({ agent }: { agent: Agent }) => {
 
         <div className="flex flex-col relative h-full">
           <div className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground px-4 py-2 bg-white/5">
-            Output / Responding JSON
+            Output / Response JSON
           </div>
           <div className="flex-1 overflow-hidden relative">
             <Editor

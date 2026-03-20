@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Search, Sparkles } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { Sparkles } from "lucide-react";
 import { AgentCard } from "./AgentCard";
 import { Agent } from "@/lib/types";
 import { Input } from "./ui/input";
@@ -25,11 +25,20 @@ export function IntentSearchBar() {
     return () => clearTimeout(handler);
   }, [query]);
 
+  const updateRecent = useCallback((q: string) => {
+    const newRecent = [q, ...recent.filter(x => x !== q)].slice(0, 5);
+    setRecent(newRecent);
+    localStorage.setItem("recent_searches", JSON.stringify(newRecent));
+  }, [recent]);
+
   useEffect(() => {
     if (!debouncedQuery) {
       setResults([]);
+      setIsSearching(false);
       return;
     }
+
+    const controller = new AbortController();
 
     const search = async () => {
       setIsSearching(true);
@@ -37,28 +46,39 @@ export function IntentSearchBar() {
         const res = await fetch("/api/search", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ query: debouncedQuery })
+          body: JSON.stringify({ query: debouncedQuery }),
+          signal: controller.signal,
         });
+
+        if (!res.ok) {
+          setResults([]);
+          return;
+        }
+
         const data = await res.json();
         if (Array.isArray(data)) {
           setResults(data);
           updateRecent(debouncedQuery);
+        } else {
+          setResults([]);
         }
       } catch (e) {
-        console.error("Search failed", e);
+        if ((e as Error).name !== "AbortError") {
+          setResults([]);
+        }
       } finally {
-        setIsSearching(false);
+        if (!controller.signal.aborted) {
+          setIsSearching(false);
+        }
       }
     };
 
     search();
-  }, [debouncedQuery]);
 
-  const updateRecent = (q: string) => {
-    const newRecent = [q, ...recent.filter(x => x !== q)].slice(0, 5);
-    setRecent(newRecent);
-    localStorage.setItem("recent_searches", JSON.stringify(newRecent));
-  };
+    return () => {
+      controller.abort();
+    };
+  }, [debouncedQuery, updateRecent]);
 
   return (
     <div className="w-full max-w-3xl mx-auto relative z-20">
@@ -70,12 +90,12 @@ export function IntentSearchBar() {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Describe what you need (e.g., 'I want to scrape hotel prices')..."
+          placeholder="Search by use case, workflow, or capability"
           className="peer block w-full pl-12 pr-4 py-6 text-lg bg-black/40 border-white/10 rounded-2xl ring-offset-background placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 overflow-hidden shadow-xl shadow-black/50 backdrop-blur-md"
         />
         {isSearching && (
           <div className="absolute inset-y-0 right-0 pr-4 flex items-center">
-            <span className="text-sm text-blue-400 animate-pulse">Finding best agents...</span>
+            <span className="text-sm text-blue-400 animate-pulse">Searching marketplace...</span>
           </div>
         )}
       </div>
@@ -95,12 +115,12 @@ export function IntentSearchBar() {
       )}
 
       {results.length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-4 bg-black/90 border border-white/10 rounded-2xl p-6 shadow-2xl backdrop-blur-xl z-50 text-left">
-          <h3 className="text-sm font-semibold text-muted-foreground mb-4 uppercase tracking-wider">Top Matches</h3>
+        <div className="mt-4 rounded-2xl border border-white/10 bg-black/90 p-6 text-left shadow-2xl backdrop-blur-xl">
+          <h3 className="text-sm font-semibold text-muted-foreground mb-4 uppercase tracking-wider">Search Results</h3>
           <div className="space-y-4">
             {results.map(r => (
               <div key={r.agent.id} className="relative group p-4 border border-white/5 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
-                <p className="text-sm italic text-blue-200 mb-3 border-l-2 border-blue-500 pl-3">"{r.matchReason}"</p>
+                <p className="text-sm italic text-blue-200 mb-3 border-l-2 border-blue-500 pl-3">&quot;{r.matchReason}&quot;</p>
                 <AgentCard agent={r.agent} />
               </div>
             ))}
