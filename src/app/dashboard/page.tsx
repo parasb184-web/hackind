@@ -1,17 +1,23 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import { useAuth } from "@/lib/AuthContext";
 import { useAgents } from "@/hooks/useAgents";
 import { AgentGrid } from "@/components/AgentGrid";
+import { DeveloperAnalytics } from "@/components/DeveloperAnalytics";
+import { ApiKey } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
 import { CheckCircle2, CloudFog, Key, Plus, Copy, Trash2 } from "lucide-react";
 
+type DashboardApiKey = ApiKey & { rawKey?: string };
+
 export default function DashboardPage() {
   const { user, githubProfile, loading } = useAuth();
   const { data: agents = [], isLoading } = useAgents();
-  const [apiKeys, setApiKeys] = useState<any[]>([]);
+  const [apiKeys, setApiKeys] = useState<DashboardApiKey[]>([]);
   const [newKeyLabel, setNewKeyLabel] = useState("");
   const [showKeyModal, setShowKeyModal] = useState<string | null>(null);
 
@@ -65,7 +71,13 @@ export default function DashboardPage() {
     <div className="container mx-auto px-6 py-12 min-h-screen">
       <div className="flex justify-between items-start mb-12">
         <div className="flex items-center gap-6">
-          <img src={githubProfile.avatarUrl} className="w-20 h-20 rounded-full border border-white/10" alt="" />
+          <Image
+            src={githubProfile.avatarUrl}
+            width={80}
+            height={80}
+            className="h-20 w-20 rounded-full border border-white/10"
+            alt={`${githubProfile.githubUsername} avatar`}
+          />
           <div>
             <h1 className="text-3xl font-bold">{githubProfile.githubUsername} Dashboard</h1>
             <p className="text-muted-foreground mt-1 text-sm bg-white/5 inline-flex px-3 rounded py-1 items-center gap-2 border border-white/5">
@@ -134,9 +146,21 @@ export default function DashboardPage() {
 
         <div>
           <h2 className="text-2xl font-bold mb-6">Your Published Agents</h2>
-          <AgentGrid agents={myAgents} isLoading={isLoading} />
+          {myAgents.length === 0 && !isLoading ? (
+            <div className="rounded-2xl border border-dashed border-white/15 bg-white/4 p-10 text-center">
+              <h3 className="text-xl font-semibold">You haven&apos;t published any agents yet</h3>
+              <p className="mt-2 text-sm text-muted-foreground">Publish your first agent to start generating usage, trust signals, and revenue.</p>
+              <Link href="/publish" className="mt-6 inline-flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-700">
+                Publish your first agent
+              </Link>
+            </div>
+          ) : (
+            <AgentGrid agents={myAgents} isLoading={isLoading} />
+          )}
         </div>
       </div>
+
+      <DeveloperAnalytics agents={myAgents} />
 
       {showKeyModal && (
         <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
@@ -149,7 +173,7 @@ export default function DashboardPage() {
               <input readOnly value={showKeyModal} className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 font-mono text-blue-400" />
               <Button onClick={() => {
                 navigator.clipboard.writeText(showKeyModal);
-                toast("Copied to clipboard!");
+                toast("Copied!");
               }} className="h-full py-3 bg-white/10 hover:bg-white/20">
                 <Copy className="w-4 h-4" />
               </Button>

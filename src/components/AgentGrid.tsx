@@ -4,6 +4,7 @@ import { Agent } from "@/lib/types";
 import { AgentCard } from "./AgentCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PackageOpen } from "lucide-react";
+import Link from "next/link";
 
 export const AgentGrid = ({ agents, isLoading }: { agents: Agent[]; isLoading: boolean }) => {
   if (isLoading) {
@@ -20,8 +21,11 @@ export const AgentGrid = ({ agents, isLoading }: { agents: Agent[]; isLoading: b
     return (
       <div className="flex flex-col items-center justify-center p-12 mt-12 text-center bg-white/5 rounded-xl border border-dashed border-white/20">
         <PackageOpen className="w-16 h-16 text-muted-foreground mb-4" />
-        <h3 className="text-xl font-bold mb-2">No agents found</h3>
-        <p className="text-muted-foreground max-w-sm">Try adjusting your filters or search query to find what you&apos;re looking for.</p>
+        <h3 className="text-xl font-bold mb-2">No agents match your filters</h3>
+        <p className="text-muted-foreground max-w-sm">Clear the current filters or try a broader search to explore more agents in the marketplace.</p>
+        <Link href="/agents" className="mt-5 inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">
+          Clear filters
+        </Link>
       </div>
     );
   }

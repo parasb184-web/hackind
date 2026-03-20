@@ -11,6 +11,11 @@ const redis = new Redis({
   token: process.env.UPSTASH_REDIS_REST_TOKEN || "mock"
 });
 
+const isMockAgent = (agent: { id: string; endpointUrl: string }) =>
+  agent.id.startsWith("mock-") ||
+  agent.endpointUrl.includes("api.agenthub.dev") ||
+  agent.endpointUrl.includes("example.com");
+
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
   let errorStr: string | null = null;
   let latencyMs = 0;
@@ -69,8 +74,8 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     let success = false;
 
     try {
-      if (agent.endpointUrl.includes("example.com")) {
-        // simulate fake fast response for dummy data
+      if (isMockAgent(agent)) {
+        // Return the seeded sample response for marketplace demo agents.
         await new Promise(r => setTimeout(r, agent.latencyMs || 500));
         outputPayload = agent.exampleOutput;
         success = true;

@@ -1,19 +1,20 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/lib/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Activity } from "lucide-react";
 
 export const Navbar = () => {
-  const { user, loading, signInWithGitHub, signOut } = useAuth();
+  const { user, loading, signOut } = useAuth();
 
   return (
-    <nav className="border-b border-white/10 bg-black/50 backdrop-blur-md sticky top-0 z-50">
-      <div className="container mx-auto px-6 h-16 flex items-center justify-between">
+    <nav className="sticky top-0 z-50 border-b border-white/8 bg-[#05080d]/60 backdrop-blur-2xl">
+      <div className="container mx-auto flex h-18 items-center justify-between px-6">
         <div className="flex items-center gap-8">
           <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight group">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-[linear-gradient(180deg,rgba(45,113,255,0.95),rgba(29,78,216,0.88))] shadow-[0_10px_24px_rgba(37,99,235,0.35)] transition-transform group-hover:scale-105">
               <Activity className="w-4 h-4 text-white" />
             </div>
             <span>Agent<span className="text-blue-500">Hub</span></span>
@@ -26,7 +27,7 @@ export const Navbar = () => {
 
         <div className="flex items-center gap-4">
           <Link href="/publish" className="hidden md:block">
-            <Button variant="ghost" className="text-sm border border-white/10 hover:bg-white/5">Publish Agent</Button>
+            <Button variant="ghost" className="glass-surface-soft rounded-full px-4 text-sm text-white hover:bg-white/10">Publish Agent</Button>
           </Link>
           {loading ? (
             <div className="w-8 h-8 rounded-full bg-white/10 animate-pulse"></div>
@@ -34,11 +35,19 @@ export const Navbar = () => {
             <div className="flex items-center gap-4">
               <Button variant="ghost" size="sm" onClick={signOut} className="text-muted-foreground hover:text-foreground">Logout</Button>
               <Link href="/dashboard">
-                <img src={user.photoURL || `https://github.com/${user.displayName}.png`} alt="avatar" className="w-8 h-8 rounded-full ring-2 ring-white/10 cursor-pointer hover:ring-blue-500 transition-all" />
+                <Image
+                  src={user.photoURL || `https://github.com/${user.displayName}.png`}
+                  alt="avatar"
+                  width={32}
+                  height={32}
+                  className="h-8 w-8 rounded-full ring-2 ring-white/10 cursor-pointer hover:ring-blue-500 transition-all"
+                />
               </Link>
             </div>
           ) : (
-            <Button onClick={signInWithGitHub} className="bg-blue-600 hover:bg-blue-700 text-white font-medium">Log in with GitHub</Button>
+            <Link href="/login">
+              <Button className="rounded-full bg-[linear-gradient(180deg,rgba(59,130,246,1),rgba(37,99,235,0.92))] px-5 text-white shadow-[0_10px_26px_rgba(37,99,235,0.35)] hover:bg-blue-700">Log in with GitHub</Button>
+            </Link>
           )}
         </div>
       </div>

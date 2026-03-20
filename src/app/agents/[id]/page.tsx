@@ -74,23 +74,39 @@ export default function AgentDetailPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 w-full lg:w-96 shrink-0 bg-[#0d1117] p-6 rounded-xl border border-white/10">
-          <div className="space-y-1">
-            <div className="text-xs text-muted-foreground flex items-center gap-1 uppercase tracking-wider font-semibold"><Activity className="w-3.5 h-3.5" /> Total Calls</div>
-            <div className="text-2xl font-mono text-white">{(agent.totalCalls / 1000).toFixed(1)}k</div>
+        <div className="w-full lg:w-96 shrink-0 space-y-4">
+          <div className="grid grid-cols-2 gap-4 bg-[#0d1117] p-6 rounded-xl border border-white/10">
+            <div className="space-y-1">
+              <div className="text-xs text-muted-foreground flex items-center gap-1 uppercase tracking-wider font-semibold"><Activity className="w-3.5 h-3.5" /> Total Calls</div>
+              <div className="text-2xl font-mono text-white">{((agent.totalCalls || 0) / 1000).toFixed(1)}k</div>
+            </div>
+            <div className="space-y-1">
+              <div className="text-xs text-muted-foreground flex items-center gap-1 uppercase tracking-wider font-semibold"><Clock className="w-3.5 h-3.5" /> Avg Latency</div>
+              <div className="text-2xl font-mono text-white">{agent.avgLatencyMs || 0}ms</div>
+            </div>
+            <div className="space-y-1">
+              <div className="text-xs text-muted-foreground flex items-center gap-1 uppercase tracking-wider font-semibold"><Server className="w-3.5 h-3.5" /> Uptime</div>
+              <div className="text-2xl font-mono text-green-400">{agent.uptimePercent || 0}%</div>
+            </div>
+            <div className="space-y-1">
+              <div className="text-xs text-muted-foreground flex items-center gap-1 uppercase tracking-wider font-semibold"><Star className="w-3.5 h-3.5" /> Rating</div>
+              <div className="text-2xl font-mono text-amber-500">{agent.rating?.toFixed(1) || "N/A"}/5</div>
+            </div>
           </div>
-          <div className="space-y-1">
-            <div className="text-xs text-muted-foreground flex items-center gap-1 uppercase tracking-wider font-semibold"><Clock className="w-3.5 h-3.5" /> Avg Latency</div>
-            <div className="text-2xl font-mono text-white">{agent.avgLatencyMs}ms</div>
-          </div>
-          <div className="space-y-1">
-            <div className="text-xs text-muted-foreground flex items-center gap-1 uppercase tracking-wider font-semibold"><Server className="w-3.5 h-3.5" /> Uptime</div>
-            <div className="text-2xl font-mono text-green-400">{agent.uptimePercent}%</div>
-          </div>
-          <div className="space-y-1">
-            <div className="text-xs text-muted-foreground flex items-center gap-1 uppercase tracking-wider font-semibold"><Star className="w-3.5 h-3.5" /> Rating</div>
-            <div className="text-2xl font-mono text-amber-500">{agent.rating?.toFixed(1) || "N/A"}/5</div>
-          </div>
+          
+          <Button 
+            className="w-full h-14 text-lg font-bold bg-blue-600 hover:bg-blue-700 transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(37,99,235,0.4)]" 
+            onClick={() => {
+              if (!user) {
+                toast("Please login with GitHub first to purchase agents.");
+                return;
+              }
+              toast.success("Redirecting to Dashboard to provision your API Key...");
+              setTimeout(() => { window.location.href = "/dashboard"; }, 1000);
+            }}
+          >
+            Buy for ${agent.costPerCall}/call
+          </Button>
         </div>
       </div>
 

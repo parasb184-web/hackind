@@ -1,14 +1,19 @@
 import { db } from "./firebase";
 import { collection, doc, getDocs, getDoc, setDoc, updateDoc, addDoc, query, where, orderBy, Timestamp, runTransaction } from "firebase/firestore";
 import { Agent, AgentCall, AgentReview } from "./types";
+import { MOCK_AGENTS } from "./dummyData";
 
 export const getAgents = async (): Promise<Agent[]> => {
   const q = query(collection(db, "agents"), where("status", "==", "active"));
   const snapshot = await getDocs(q);
+  if (snapshot.empty) return MOCK_AGENTS;
   return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Agent));
 };
 
 export const getAgentById = async (id: string): Promise<Agent | null> => {
+  const mockAgent = MOCK_AGENTS.find(a => a.id === id);
+  if (mockAgent) return mockAgent;
+
   const docRef = doc(db, "agents", id);
   const docSnap = await getDoc(docRef);
   if (!docSnap.exists()) return null;

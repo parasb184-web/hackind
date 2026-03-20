@@ -123,6 +123,12 @@
   }
   body {
     @apply bg-background text-foreground;
+    background:
+      radial-gradient(circle at 18% 12%, rgba(74, 144, 226, 0.14), transparent 20%),
+      radial-gradient(circle at 82% 14%, rgba(91, 161, 255, 0.12), transparent 22%),
+      radial-gradient(circle at 50% 55%, rgba(22, 52, 96, 0.18), transparent 36%),
+      linear-gradient(180deg, #04070d 0%, #07101c 42%, #05070b 100%);
+    background-attachment: fixed;
   }
   html {
     @apply font-sans;
@@ -144,6 +150,28 @@
   }
   100% {
     transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes livePulse {
+  0%, 100% {
+    opacity: 0.65;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
   }
 }
 
@@ -194,5 +222,58 @@
   .news-float {
     animation: news-float 6.5s ease-in-out infinite;
     will-change: transform;
+  }
+
+  .page-fade-in {
+    animation: fadeIn 420ms ease-out;
+  }
+
+  .live-pulse-dot {
+    animation: livePulse 1.8s ease-in-out infinite;
+  }
+
+  .site-grid-bg {
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 64px 64px;
+    background-position: center;
+  }
+
+  .glass-surface {
+    background: linear-gradient(180deg, rgba(10,16,27,0.78), rgba(7,11,18,0.72));
+    backdrop-filter: blur(22px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+      0 20px 90px rgba(0, 0, 0, 0.32),
+      inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+
+  .glass-surface-soft {
+    background: linear-gradient(180deg, rgba(10,16,27,0.56), rgba(7,11,18,0.48));
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+      0 16px 54px rgba(0, 0, 0, 0.24),
+      inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+
+  .hero-orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(72px);
+    pointer-events: none;
+  }
+
+  .hero-orb-blue {
+    background: radial-gradient(circle, rgba(42, 118, 255, 0.38) 0%, rgba(42,118,255,0.1) 35%, transparent 72%);
+  }
+
+  .hero-orb-cyan {
+    background: radial-gradient(circle, rgba(105, 203, 255, 0.24) 0%, rgba(105,203,255,0.08) 36%, transparent 76%);
+  }
+
+  .hero-orb-slate {
+    background: radial-gradient(circle, rgba(148, 163, 184, 0.15) 0%, rgba(148,163,184,0.04) 32%, transparent 72%);
   }
 }
