@@ -59,8 +59,11 @@ export default function ScanPage() {
   return (
     <div className="container mx-auto px-6 py-24 min-h-screen">
       <div className="text-center max-w-3xl mx-auto mb-16">
-        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6">Multi-Context Scan</h1>
-        <p className="text-lg text-muted-foreground">
+        <div className="flex justify-center mb-10">
+          <img src="/assets/images/scan_hero.png" alt="Repository Scanner Illustration" className="h-56 w-auto mix-blend-multiply drop-shadow-lg transition-transform hover:scale-105 duration-700" />
+        </div>
+        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6 text-neutral-900">Multi-Context Scan</h1>
+        <p className="text-lg text-neutral-600">
           Drop in a GitHub repo, Jira ticket, or system error log.
           AgentHub uses Claude 3.5 Sonnet to map your exact pain points straight to ready-to-deploy autonomous agents.
         </p>
@@ -81,9 +84,9 @@ export default function ScanPage() {
       )}
 
       {scanResult && gapAgents.length > 0 && (
-        <div className="mt-24 pt-12 border-t border-white/5 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-500">
-          <h2 className="text-2xl font-bold tracking-tight mb-8 text-center">Missing Capabilities Detectors</h2>
-          <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
+        <div className="mt-24 pt-12 border-t border-neutral-200 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-500">
+          <h2 className="text-2xl font-bold tracking-tight mb-8 text-center text-neutral-900">Missing Capabilities Detectors</h2>
+          <p className="text-center text-neutral-600 mb-12 max-w-2xl mx-auto">
             Based on millions of similar repository structures within Upstash Vector, AgentHub identified that you are missing several key automation nodes standard in this stack.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">

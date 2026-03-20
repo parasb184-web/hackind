@@ -129,14 +129,14 @@ function AgentsContent() {
 
   return (
     <div className="container mx-auto px-6 py-12 min-h-screen">
-      <div className="mb-12 border-b border-white/10 pb-8">
-        <h1 className="text-4xl font-extrabold tracking-tight mb-4">Marketplace</h1>
+      <div className="mb-12 border-b border-neutral-200 pb-8">
+        <h1 className="text-4xl font-extrabold tracking-tight mb-4 text-neutral-900">Marketplace</h1>
         <p className="text-muted-foreground text-lg mb-8 max-w-2xl">Browse, verify, and integrate thousands of intelligent agents serving highly specific needs.</p>
         <SearchBar />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
-        <aside className="lg:col-span-1 border-r border-white/5 h-full">
+        <aside className="lg:col-span-1 border-r border-neutral-200 h-full">
           <FilterSidebar agents={agents} />
         </aside>
 

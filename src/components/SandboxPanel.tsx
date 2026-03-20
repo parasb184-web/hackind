@@ -49,13 +49,13 @@ export const SandboxPanel = ({ agent }: { agent: Agent }) => {
   };
 
   return (
-    <div className="flex flex-col h-[600px] border border-white/10 rounded-xl overflow-hidden bg-black">
-      <div className="flex items-center justify-between px-4 py-3 bg-white/5 border-b border-white/10">
+    <div className="flex flex-col h-[600px] border border-neutral-200 rounded-xl overflow-hidden bg-white shadow-sm">
+      <div className="flex items-center justify-between px-4 py-3 bg-neutral-50 border-b border-neutral-200">
         <div className="flex items-center gap-4">
-          <span className="font-semibold text-sm">Sandbox</span>
+          <span className="font-bold text-sm text-neutral-900">Sandbox</span>
           {latency !== null && (
-            <span className="text-xs text-muted-foreground flex items-center gap-1 bg-white/5 px-2 py-1 rounded-md">
-              <CheckCircle2 className="w-3 h-3 text-green-500" />
+            <span className="text-xs text-neutral-500 font-bold flex items-center gap-1 bg-white border border-neutral-200 px-2 py-1 rounded-md shadow-sm">
+              <CheckCircle2 className="w-3 h-3 text-emerald-500" />
               {latency}ms
             </span>
           )}
@@ -72,25 +72,25 @@ export const SandboxPanel = ({ agent }: { agent: Agent }) => {
             placeholder="API key"
             value={apiKey}
             onChange={(e) => setApiKey(e.target.value)}
-            className="w-48 bg-black/50 border border-white/10 rounded-md px-3 h-8 text-xs font-mono focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-blue-500"
+            className="w-48 bg-white border border-neutral-200 rounded-md px-3 h-8 text-xs font-mono focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-blue-500 text-neutral-900 placeholder:text-neutral-400"
           />
-          <Button size="sm" onClick={handleRun} disabled={isLoading || !apiKey} className="bg-blue-600 hover:bg-blue-700 h-8 text-xs font-medium px-4">
+          <Button size="sm" onClick={handleRun} disabled={isLoading || !apiKey} className="bg-blue-600 hover:bg-blue-700 h-8 text-xs font-bold px-4 text-white">
             {isLoading ? <Loader2 className="w-3.5 h-3.5 mr-2 animate-spin" /> : <Play className="w-3.5 h-3.5 mr-2" />}
             Run Agent
           </Button>
         </div>
       </div>
 
-      <div className="flex-1 grid grid-cols-2 divide-x divide-white/10">
+      <div className="flex-1 grid grid-cols-2 divide-x divide-neutral-200">
         <div className="flex flex-col relative h-full">
-          <div className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground px-4 py-2 bg-white/5 uppercase">
+          <div className="text-[10px] uppercase font-bold tracking-widest text-neutral-500 px-4 py-2 bg-neutral-50 uppercase border-b border-neutral-200">
             Input / JSON payload
           </div>
-          <div className="flex-1 overflow-hidden relative group">
+          <div className="flex-1 overflow-hidden relative group bg-white">
             <Editor
               height="100%"
               defaultLanguage="json"
-              theme="vs-dark"
+              theme="vs-light"
               value={inputCode}
               onChange={(v) => setInputCode(v || "")}
               options={{ minimap: { enabled: false }, fontSize: 13, formatOnPaste: true, scrollBeyondLastLine: false, padding: { top: 16 } }}
@@ -99,14 +99,14 @@ export const SandboxPanel = ({ agent }: { agent: Agent }) => {
         </div>
 
         <div className="flex flex-col relative h-full">
-          <div className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground px-4 py-2 bg-white/5">
+          <div className="text-[10px] uppercase font-bold tracking-widest text-neutral-500 px-4 py-2 bg-neutral-50 border-b border-neutral-200">
             Output / Response JSON
           </div>
-          <div className="flex-1 overflow-hidden relative">
+          <div className="flex-1 overflow-hidden relative bg-white">
             <Editor
               height="100%"
               defaultLanguage="json"
-              theme="vs-dark"
+              theme="vs-light"
               value={outputCode}
               options={{ readOnly: true, minimap: { enabled: false }, fontSize: 13, scrollBeyondLastLine: false, padding: { top: 16 } }}
             />

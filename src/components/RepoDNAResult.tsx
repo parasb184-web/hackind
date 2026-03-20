@@ -48,9 +48,9 @@ export function RepoDNAResult({ result }: { result: RepoDNAResultData | null }) 
 
   if (!result) {
     return (
-      <div className="w-full max-w-4xl mx-auto py-12 px-6 bg-black/40 border border-white/10 rounded-3xl mt-8 flex flex-col items-center shadow-xl">
+      <div className="w-full max-w-4xl mx-auto py-12 px-6 bg-white border border-neutral-200 rounded-3xl mt-8 flex flex-col items-center shadow-lg">
         <div className="w-16 h-16 rounded-full border-b-2 border-r-2 border-blue-500 animate-spin mb-8"></div>
-        <p className="text-sm font-mono text-muted-foreground">Preparing repository analysis...</p>
+        <p className="text-sm font-mono text-neutral-500">Preparing repository analysis...</p>
       </div>
     );
   }
@@ -65,13 +65,13 @@ export function RepoDNAResult({ result }: { result: RepoDNAResultData | null }) 
 
   if (loadingStep < 4) {
     return (
-      <div className="w-full max-w-4xl mx-auto py-12 px-6 bg-black/40 border border-white/10 rounded-3xl mt-8 flex flex-col items-center shadow-xl">
+      <div className="w-full max-w-4xl mx-auto py-12 px-6 bg-white border border-neutral-200 rounded-3xl mt-8 flex flex-col items-center shadow-lg">
         <div className="w-16 h-16 rounded-full border-b-2 border-r-2 border-blue-500 animate-spin mb-8"></div>
         <div className="space-y-4 w-full max-w-sm">
           {steps.map((step, idx) => (
             <div key={idx} className={`flex items-center gap-3 transition-opacity duration-500 ${loadingStep >= idx ? 'opacity-100' : 'opacity-30'}`}>
-              <CheckCircle2 className={`w-5 h-5 ${loadingStep > idx ? 'text-green-500' : 'text-blue-500'}`} />
-              <span className={`font-mono text-sm ${loadingStep > idx ? 'text-muted-foreground' : 'text-white'}`}>{step}</span>
+              <CheckCircle2 className={`w-5 h-5 ${loadingStep > idx ? 'text-emerald-500' : 'text-blue-500'}`} />
+              <span className={`font-mono font-bold text-sm ${loadingStep > idx ? 'text-neutral-400' : 'text-neutral-900'}`}>{step}</span>
             </div>
           ))}
         </div>
@@ -93,40 +93,40 @@ export function RepoDNAResult({ result }: { result: RepoDNAResultData | null }) 
   return (
     <div className="w-full max-w-5xl mx-auto py-12 mt-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
 
-      <div className="flex flex-wrap gap-6 mb-12 p-6 bg-white/5 border border-white/10 rounded-2xl">
-        <div className="flex items-center gap-2"><Star className="w-5 h-5 text-yellow-500" /> <span className="font-mono">{repoMeta?.stars} Stars</span></div>
-        <div className="flex items-center gap-2"><Users className="w-5 h-5 text-blue-400" /> <span className="font-mono">{repoMeta?.contributors} Contributors</span></div>
-        <div className="flex items-center gap-2"><GitPullRequest className="w-5 h-5 text-green-400" /> <span className="font-mono">{repoMeta?.openIssues} Open Issues</span></div>
-        <div className="flex items-center gap-2"><LayoutTemplate className="w-5 h-5 text-purple-400" /> <span className="font-mono">{repoMeta?.primaryLanguage}</span></div>
+      <div className="flex flex-wrap gap-6 mb-12 p-6 bg-neutral-50 border border-neutral-200 rounded-2xl shadow-sm">
+        <div className="flex items-center gap-2"><Star className="w-5 h-5 text-amber-500" /> <span className="font-mono font-bold text-neutral-900">{repoMeta?.stars} Stars</span></div>
+        <div className="flex items-center gap-2"><Users className="w-5 h-5 text-blue-600" /> <span className="font-mono font-bold text-neutral-900">{repoMeta?.contributors} Contributors</span></div>
+        <div className="flex items-center gap-2"><GitPullRequest className="w-5 h-5 text-emerald-500" /> <span className="font-mono font-bold text-neutral-900">{repoMeta?.openIssues} Open Issues</span></div>
+        <div className="flex items-center gap-2"><LayoutTemplate className="w-5 h-5 text-purple-600" /> <span className="font-mono font-bold text-neutral-900">{repoMeta?.primaryLanguage}</span></div>
       </div>
 
       <div className="space-y-8">
-        <h2 className="text-2xl font-bold tracking-tight mb-6">Identified Pain Points & Agent Solutions</h2>
+        <h2 className="text-2xl font-bold tracking-tight mb-6 text-neutral-900">Identified Pain Points & Agent Solutions</h2>
 
         {painPoints?.map((pp, idx: number) => {
           const matchingAgent = matchedAgents.find((a) => a.capabilityTags?.includes(pp.agentCategory));
 
           return (
-            <div key={idx} className="bg-black/40 border border-white/10 p-6 rounded-3xl">
+            <div key={idx} className="bg-white border border-neutral-200 p-6 rounded-3xl shadow-sm">
               <div className="flex items-start justify-between mb-6">
                 <div className="max-w-3xl">
-                  <h3 className="text-lg font-semibold mb-2">{pp.painPoint}</h3>
-                  <p className="text-muted-foreground text-sm italic border-l-2 border-white/20 pl-4">{pp.specificReason}</p>
+                  <h3 className="text-lg font-bold mb-2 text-neutral-900">{pp.painPoint}</h3>
+                  <p className="text-neutral-600 text-sm italic border-l-2 border-neutral-300 pl-4">{pp.specificReason}</p>
                 </div>
-                <div className="px-3 py-1 bg-green-500/10 text-green-400 text-xs font-bold rounded-full whitespace-nowrap border border-green-500/20">
+                <div className="px-3 py-1 bg-emerald-50 border border-emerald-200 text-emerald-600 text-xs font-bold rounded-full whitespace-nowrap">
                   {pp.estimatedTimeSaved}
                 </div>
               </div>
 
               {matchingAgent ? (
-                <div className="pt-4 border-t border-white/5">
-                  <span className="text-xs uppercase tracking-widest text-muted-foreground font-semibold mb-4 block">Recommended Agent</span>
+                <div className="pt-4 border-t border-neutral-100">
+                  <span className="text-xs uppercase tracking-widest text-neutral-500 font-bold mb-4 block">Recommended Agent</span>
                   <div className="max-w-sm">
                     <AgentCard agent={matchingAgent} />
                   </div>
                 </div>
               ) : (
-                <div className="pt-4 border-t border-white/5 text-sm font-mono text-muted-foreground">
+                <div className="pt-4 border-t border-neutral-100 text-sm font-mono text-neutral-500">
                   No direct agent matches found in marketplace yet for &quot;{pp.agentCategory}&quot;.
                 </div>
               )}
@@ -137,18 +137,18 @@ export function RepoDNAResult({ result }: { result: RepoDNAResultData | null }) 
 
       <div className="mt-12 flex justify-center">
         {shareUrl ? (
-          <div className="w-full rounded-[2rem] border border-blue-500/20 bg-[#0b1120] p-6">
-            <div className="mb-6 flex items-center gap-2 text-blue-300">
+          <div className="w-full rounded-[2rem] border border-blue-200 bg-blue-50 p-6 shadow-sm">
+            <div className="mb-6 flex items-center gap-2 text-blue-600">
               <BadgeCheck className="h-5 w-5" />
-              <h3 className="text-xl font-bold text-white">Share your agent stack</h3>
+              <h3 className="text-xl font-bold text-neutral-900">Share your agent stack</h3>
             </div>
 
             <div className="space-y-4">
               <div>
-                <p className="mb-2 text-xs uppercase tracking-[0.22em] text-blue-100/40">Shareable URL</p>
+                <p className="mb-2 text-xs uppercase font-bold tracking-[0.22em] text-neutral-500">Shareable URL</p>
                 <div className="flex flex-col gap-3 md:flex-row">
-                  <input readOnly value={shareUrl} className="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-blue-100" />
-                  <Button onClick={() => handleCopy(shareUrl, "url")} className="bg-blue-600 hover:bg-blue-700">
+                  <input readOnly value={shareUrl} className="w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 text-sm text-neutral-900 font-medium" />
+                  <Button onClick={() => handleCopy(shareUrl, "url")} className="bg-blue-600 hover:bg-blue-700 text-white font-bold">
                     {copiedField === "url" ? "Copied!" : "Copy URL"}
                     <Link2 className="ml-2 h-4 w-4" />
                   </Button>
@@ -156,10 +156,10 @@ export function RepoDNAResult({ result }: { result: RepoDNAResultData | null }) 
               </div>
 
               <div>
-                <p className="mb-2 text-xs uppercase tracking-[0.22em] text-blue-100/40">README badge markdown</p>
+                <p className="mb-2 text-xs uppercase font-bold tracking-[0.22em] text-neutral-500">README badge markdown</p>
                 <div className="flex flex-col gap-3 md:flex-row">
-                  <textarea readOnly value={badgeMarkdown} className="min-h-24 w-full rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-blue-100" />
-                  <Button onClick={() => handleCopy(badgeMarkdown, "badge")} variant="outline" className="border-white/10 bg-white/5 text-white hover:bg-white/10">
+                  <textarea readOnly value={badgeMarkdown} className="min-h-24 w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 text-sm text-neutral-900 font-mono" />
+                  <Button onClick={() => handleCopy(badgeMarkdown, "badge")} variant="outline" className="border-neutral-300 bg-white text-neutral-700 hover:bg-neutral-50 font-bold">
                     {copiedField === "badge" ? "Copied!" : "Copy badge"}
                     <Copy className="ml-2 h-4 w-4" />
                   </Button>

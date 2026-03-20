@@ -15,7 +15,7 @@ export const SearchBar = () => {
       <Input
         type="text"
         placeholder="Try 'summarize prs' or 'extract data'..."
-        className="w-full pl-12 pr-4 py-6 rounded-full bg-white/5 border-white/20 focus-visible:ring-blue-500 shadow-xl text-lg backdrop-blur-sm transition-all focus:bg-white/10"
+        className="w-full pl-12 pr-4 py-6 rounded-full bg-white border-neutral-200 focus-visible:ring-blue-500 shadow-sm text-lg backdrop-blur-sm transition-all focus:shadow-md text-neutral-900 placeholder:text-neutral-400"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />

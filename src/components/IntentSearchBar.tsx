@@ -91,7 +91,7 @@ export function IntentSearchBar() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search by use case, workflow, or capability"
-          className="peer block w-full rounded-[1.75rem] border border-white/10 bg-[linear-gradient(180deg,rgba(12,18,30,0.78),rgba(8,12,20,0.7))] pl-12 pr-4 py-7 text-lg text-white ring-offset-background placeholder:text-blue-100/42 shadow-[0_20px_70px_rgba(0,0,0,0.32)] backdrop-blur-2xl focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          className="peer block w-full rounded-[1.75rem] border border-neutral-200/60 bg-white/90 pl-12 pr-4 py-7 text-lg text-neutral-900 ring-offset-background placeholder:text-neutral-400 shadow-[0_8px_30px_rgba(0,0,0,0.06)] backdrop-blur-2xl focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition-all hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)]"
         />
         {isSearching && (
           <div className="absolute inset-y-0 right-0 pr-4 flex items-center">
@@ -106,7 +106,7 @@ export function IntentSearchBar() {
             <button
               key={r}
               onClick={() => setQuery(r)}
-              className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-muted-foreground hover:bg-white/10 transition-colors"
+              className="px-4 py-1.5 rounded-full bg-white border border-neutral-200 text-sm font-medium text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900 transition-colors shadow-sm"
             >
               {r}
             </button>
@@ -115,12 +115,12 @@ export function IntentSearchBar() {
       )}
 
       {results.length > 0 && (
-        <div className="glass-surface mt-5 rounded-[1.75rem] p-6 text-left">
-          <h3 className="text-sm font-semibold text-muted-foreground mb-4 uppercase tracking-wider">Search Results</h3>
+        <div className="glass-surface mt-5 rounded-[1.75rem] p-6 text-left border border-neutral-200 bg-white/80 shadow-lg">
+          <h3 className="text-sm font-bold text-neutral-500 mb-4 uppercase tracking-wider">Search Results</h3>
           <div className="space-y-4">
             {results.map(r => (
-              <div key={r.agent.id} className="relative group rounded-2xl border border-white/8 bg-white/[0.035] p-4 transition-colors hover:bg-white/[0.06]">
-                <p className="text-sm italic text-blue-200 mb-3 border-l-2 border-blue-500 pl-3">&quot;{r.matchReason}&quot;</p>
+              <div key={r.agent.id} className="relative group rounded-2xl border border-neutral-100 bg-white p-4 transition-colors hover:bg-blue-50/50 shadow-sm hover:shadow-md">
+                <p className="text-sm italic text-blue-600 mb-3 border-l-2 border-blue-500 pl-3">&quot;{r.matchReason}&quot;</p>
                 <AgentCard agent={r.agent} />
               </div>
             ))}

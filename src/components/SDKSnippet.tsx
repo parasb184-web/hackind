@@ -48,9 +48,9 @@ console.log(result);`;
 
   useEffect(() => {
     const highlight = async () => {
-      const p = await codeToHtml(pyCode, { lang: "python", theme: "github-dark" });
-      const j = await codeToHtml(jsCode, { lang: "javascript", theme: "github-dark" });
-      const c = await codeToHtml(curlCode, { lang: "bash", theme: "github-dark" });
+      const p = await codeToHtml(pyCode, { lang: "python", theme: "github-light" });
+      const j = await codeToHtml(jsCode, { lang: "javascript", theme: "github-light" });
+      const c = await codeToHtml(curlCode, { lang: "bash", theme: "github-light" });
       setSnippets({ py: p, js: j, cur: c });
     };
     highlight();
@@ -64,13 +64,13 @@ console.log(result);`;
   };
 
   return (
-    <div className="rounded-xl overflow-hidden border border-white/10 bg-[#0d1117] mt-8">
+    <div className="rounded-xl overflow-hidden border border-neutral-200 bg-white mt-8 shadow-sm">
       <Tabs defaultValue="python" className="w-full">
-        <div className="flex items-center justify-between border-b border-white/10 bg-white/5 pr-4">
+        <div className="flex items-center justify-between border-b border-neutral-200 bg-neutral-50 pr-4">
           <TabsList className="bg-transparent rounded-none p-0 h-10 border-0">
-            <TabsTrigger value="python" className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-blue-500 rounded-none h-10 border-b-2 border-transparent hover:text-white px-4">Python</TabsTrigger>
-            <TabsTrigger value="javascript" className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-blue-500 rounded-none h-10 border-b-2 border-transparent hover:text-white px-4">JavaScript</TabsTrigger>
-            <TabsTrigger value="curl" className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-blue-500 rounded-none h-10 border-b-2 border-transparent hover:text-white px-4">cURL</TabsTrigger>
+            <TabsTrigger value="python" className="data-[state=active]:bg-white data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600 rounded-none h-10 border-b-2 border-transparent hover:text-neutral-900 transition-colors px-4 font-bold text-neutral-500">Python</TabsTrigger>
+            <TabsTrigger value="javascript" className="data-[state=active]:bg-white data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600 rounded-none h-10 border-b-2 border-transparent hover:text-neutral-900 transition-colors px-4 font-bold text-neutral-500">JavaScript</TabsTrigger>
+            <TabsTrigger value="curl" className="data-[state=active]:bg-white data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600 rounded-none h-10 border-b-2 border-transparent hover:text-neutral-900 transition-colors px-4 font-bold text-neutral-500">cURL</TabsTrigger>
           </TabsList>
           <button
             onClick={() => {
@@ -81,7 +81,7 @@ console.log(result);`;
               else if (v === "javascript") onCopy(jsCode);
               else onCopy(curlCode);
             }}
-            className="text-muted-foreground hover:text-white transition-colors"
+            className="text-neutral-500 hover:text-neutral-900 transition-colors"
           >
             {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
           </button>

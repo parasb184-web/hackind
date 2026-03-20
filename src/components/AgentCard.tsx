@@ -27,7 +27,7 @@ const formatCalls = (num: number) => {
 export const AgentCard = ({ agent }: { agent: Agent }) => {
   return (
     <Link href={`/agents/${agent.id}`}>
-      <Card className="h-full flex flex-col hover:border-blue-500/50 transition-colors cursor-pointer bg-[#111] overflow-hidden group">
+      <Card className="h-full flex flex-col hover:border-blue-300 transition-all cursor-pointer bg-white overflow-hidden group shadow-sm hover:shadow-md border-neutral-200/60">
         <CardHeader className="pb-3 px-5 pt-5 flex flex-row items-start justify-between">
           <div className="flex-1 space-y-1">
             <CardTitle className="text-base font-bold truncate leading-tight flex items-center gap-2">
@@ -60,7 +60,7 @@ export const AgentCard = ({ agent }: { agent: Agent }) => {
             )}
           </div>
         </CardContent>
-        <CardFooter className="px-5 py-3 bg-white/5 border-t flex items-center justify-between text-xs text-muted-foreground">
+        <CardFooter className="px-5 py-3 bg-neutral-50 border-t border-neutral-100 flex items-center justify-between text-xs text-neutral-500">
           <div className="flex gap-4">
             <span className="flex items-center gap-1 group-hover:text-amber-500 transition-colors">
               <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />

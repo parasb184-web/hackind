@@ -10,47 +10,48 @@ export const Navbar = () => {
   const { user, loading, signOut } = useAuth();
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-white/8 bg-[#05080d]/60 backdrop-blur-2xl">
-      <div className="container mx-auto flex h-18 items-center justify-between px-6">
-        <div className="flex items-center gap-8">
-          <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight group">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-[linear-gradient(180deg,rgba(45,113,255,0.95),rgba(29,78,216,0.88))] shadow-[0_10px_24px_rgba(37,99,235,0.35)] transition-transform group-hover:scale-105">
-              <Activity className="w-4 h-4 text-white" />
-            </div>
-            <span>Agent<span className="text-blue-500">Hub</span></span>
-          </Link>
-          <div className="hidden md:flex gap-6 text-sm font-medium text-muted-foreground">
-            <Link href="/agents" className="hover:text-foreground transition-colors">Marketplace</Link>
-            <Link href="/dashboard" className="hover:text-foreground transition-colors">Dashboard</Link>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <Link href="/publish" className="hidden md:block">
-            <Button variant="ghost" className="glass-surface-soft rounded-full px-4 text-sm text-white hover:bg-white/10">Publish Agent</Button>
-          </Link>
-          {loading ? (
-            <div className="w-8 h-8 rounded-full bg-white/10 animate-pulse"></div>
-          ) : user ? (
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="sm" onClick={signOut} className="text-muted-foreground hover:text-foreground">Logout</Button>
-              <Link href="/dashboard">
-                <Image
-                  src={user.photoURL || `https://github.com/${user.displayName}.png`}
-                  alt="avatar"
-                  width={32}
-                  height={32}
-                  className="h-8 w-8 rounded-full ring-2 ring-white/10 cursor-pointer hover:ring-blue-500 transition-all"
-                />
-              </Link>
-            </div>
-          ) : (
-            <Link href="/login">
-              <Button className="rounded-full bg-[linear-gradient(180deg,rgba(59,130,246,1),rgba(37,99,235,0.92))] px-5 text-white shadow-[0_10px_26px_rgba(37,99,235,0.35)] hover:bg-blue-700">Log in with GitHub</Button>
-            </Link>
-          )}
-        </div>
+    <>
+      <div className="w-full bg-[#1c7ced] text-white text-xs md:text-sm py-2.5 px-4 text-center font-medium tracking-wide">
+        Find 500 B2B Contacts for Free Every Month with Built-In Outreach. <a href="#" className="font-bold underline underline-offset-2 ml-1">Try AgentHub AI ! ↗</a>
       </div>
-    </nav>
+      <div className="w-full px-4 pt-6 pb-2 sticky top-0 z-50">
+        <nav className="mx-auto max-w-5xl flex h-16 items-center justify-between rounded-full border border-neutral-200 bg-white/95 backdrop-blur-md px-6 shadow-sm">
+          <div className="flex items-center gap-8">
+            <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight group text-[#111827]">
+              Agent<span className="text-[#00b4d8]">Hub</span>
+            </Link>
+            <div className="hidden md:flex gap-6 text-sm font-medium text-neutral-600">
+              <Link href="/agents" className="hover:text-neutral-900 transition-colors">Products</Link>
+              <Link href="/scan" className="hover:text-neutral-900 transition-colors">Use Cases</Link>
+              <span className="hover:text-neutral-900 transition-colors cursor-pointer">Resources</span>
+              <span className="hover:text-neutral-900 transition-colors cursor-pointer">Pricing</span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4">
+            {loading ? (
+              <div className="w-8 h-8 rounded-full bg-neutral-200 animate-pulse"></div>
+            ) : user ? (
+              <div className="flex items-center gap-4">
+                <Button variant="ghost" size="sm" onClick={signOut} className="text-neutral-600 hover:text-neutral-900 font-medium hidden md:block">Logout</Button>
+                <Link href="/dashboard">
+                  <Button className="rounded-full bg-[#111827] px-6 text-white hover:bg-[#374151] font-medium transition-colors">Dashboard →</Button>
+                </Link>
+              </div>
+            ) : (
+              <>
+                <Link href="/login" className="text-sm font-medium text-neutral-600 hover:text-neutral-900 hidden md:block">
+                  Login
+                </Link>
+                <Button variant="outline" className="hidden lg:flex rounded-full border-neutral-300 text-neutral-700 hover:bg-neutral-50 font-medium px-5">Book a Demo</Button>
+                <Link href="/login">
+                  <Button className="rounded-full bg-[#111827] px-6 text-white hover:bg-[#374151] font-medium transition-colors">Get Started →</Button>
+                </Link>
+              </>
+            )}
+          </div>
+        </nav>
+      </div>
+    </>
   );
 };

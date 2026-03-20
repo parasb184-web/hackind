@@ -33,7 +33,7 @@ export const FilterSidebar = ({ agents }: { agents: Agent[] }) => {
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value)}
-          className="w-full bg-white/5 border border-white/10 rounded-md p-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="w-full bg-white border border-neutral-200 text-neutral-900 rounded-md p-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 shadow-sm"
         >
           <option value="newest">Newest</option>
           <option value="used">Most Used</option>
@@ -46,7 +46,7 @@ export const FilterSidebar = ({ agents }: { agents: Agent[] }) => {
         <h4 className="font-semibold text-sm mb-4 uppercase tracking-wider text-muted-foreground">Max Cost / Call</h4>
         <div className="flex justify-between items-center mb-2">
           <span className="text-xs text-muted-foreground">$0</span>
-          <span className="text-xs font-mono text-blue-400">${maxCost.toFixed(3)}</span>
+          <span className="text-xs font-mono text-blue-600 font-bold">${maxCost.toFixed(3)}</span>
         </div>
         <Slider
           value={[maxCost]}
@@ -62,7 +62,7 @@ export const FilterSidebar = ({ agents }: { agents: Agent[] }) => {
         <h4 className="font-semibold text-sm mb-4 uppercase tracking-wider text-muted-foreground">Min Trust Score</h4>
         <div className="flex justify-between items-center mb-2">
           <span className="text-xs text-muted-foreground">0</span>
-          <span className="text-xs font-mono text-blue-400">{minTrust}</span>
+          <span className="text-xs font-mono text-blue-600 font-bold">{minTrust}</span>
         </div>
         <Slider
           value={[minTrust]}
@@ -79,8 +79,8 @@ export const FilterSidebar = ({ agents }: { agents: Agent[] }) => {
         <div className="space-y-3 max-h-48 overflow-y-auto custom-scrollbar">
           {allTags.map((tag) => (
             <label key={tag} className="flex items-center space-x-3 cursor-pointer group">
-              <Checkbox checked={tags.includes(tag)} onCheckedChange={() => toggleTag(tag)} className="border-white/20 data-[state=checked]:bg-blue-500 data-[state=checked]:border-blue-500" />
-              <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">{tag}</span>
+              <Checkbox checked={tags.includes(tag)} onCheckedChange={() => toggleTag(tag)} className="border-neutral-300 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600 shadow-sm" />
+              <span className="text-sm text-neutral-600 group-hover:text-neutral-900 font-medium transition-colors">{tag}</span>
             </label>
           ))}
         </div>
@@ -91,8 +91,8 @@ export const FilterSidebar = ({ agents }: { agents: Agent[] }) => {
         <div className="space-y-3">
           {allLangs.map((lang) => (
             <label key={lang} className="flex items-center space-x-3 cursor-pointer group">
-              <Checkbox checked={langs.includes(lang)} onCheckedChange={() => toggleLang(lang)} className="border-white/20 data-[state=checked]:bg-blue-500 data-[state=checked]:border-blue-500" />
-              <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">{lang}</span>
+              <Checkbox checked={langs.includes(lang)} onCheckedChange={() => toggleLang(lang)} className="border-neutral-300 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600 shadow-sm" />
+              <span className="text-sm text-neutral-600 group-hover:text-neutral-900 font-medium transition-colors">{lang}</span>
             </label>
           ))}
         </div>

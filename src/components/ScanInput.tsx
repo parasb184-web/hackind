@@ -22,11 +22,11 @@ export function ScanInput({ onAnalyze }: { onAnalyze: (input: string, type: stri
   };
 
   const typeConfig = {
-    github: { icon: <Github className="w-4 h-4" />, label: "GitHub Repo detected", color: "text-white", bg: "bg-white/10", placeholder: "Paste a GitHub repo URL e.g. github.com/vercel/next.js" },
-    notion: { icon: <FileText className="w-4 h-4" />, label: "Notion Doc detected", color: "text-white", bg: "bg-white/10", placeholder: "Paste a Notion link..." },
-    errorlog: { icon: <FileJson className="w-4 h-4" />, label: "Error Log detected", color: "text-red-400", bg: "bg-red-500/10", placeholder: "Paste your error log or stack trace..." },
-    jobdescription: { icon: <Briefcase className="w-4 h-4" />, label: "Job Description detected", color: "text-blue-400", bg: "bg-blue-500/10", placeholder: "Paste a job description..." },
-    plaintext: { icon: <ScanSearch className="w-4 h-4" />, label: "Plain Text", color: "text-muted-foreground", bg: "bg-white/5", placeholder: "Describe your project in plain English or paste URLs..." }
+    github: { icon: <Github className="w-4 h-4" />, label: "GitHub Repo detected", color: "text-neutral-900", bg: "bg-neutral-100", placeholder: "Paste a GitHub repo URL e.g. github.com/vercel/next.js" },
+    notion: { icon: <FileText className="w-4 h-4" />, label: "Notion Doc detected", color: "text-neutral-900", bg: "bg-neutral-100", placeholder: "Paste a Notion link..." },
+    errorlog: { icon: <FileJson className="w-4 h-4" />, label: "Error Log detected", color: "text-red-600", bg: "bg-red-50", placeholder: "Paste your error log or stack trace..." },
+    jobdescription: { icon: <Briefcase className="w-4 h-4" />, label: "Job Description detected", color: "text-blue-600", bg: "bg-blue-50", placeholder: "Paste a job description..." },
+    plaintext: { icon: <ScanSearch className="w-4 h-4" />, label: "Plain Text", color: "text-neutral-500", bg: "bg-neutral-100", placeholder: "Describe your project in plain English or paste URLs..." }
   };
 
   const config = typeConfig[type];
@@ -35,7 +35,7 @@ export function ScanInput({ onAnalyze }: { onAnalyze: (input: string, type: stri
     <div className="w-full max-w-4xl mx-auto space-y-4">
       <div className="relative group">
         <textarea
-          className="w-full min-h-[200px] bg-black/40 border border-white/10 rounded-2xl p-6 text-lg placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-500 resize-none font-mono"
+          className="w-full min-h-[200px] bg-white border border-neutral-200 rounded-2xl p-6 text-lg text-neutral-900 placeholder:text-neutral-400 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-500 resize-none font-mono shadow-sm"
           placeholder={config.placeholder}
           value={input}
           onChange={(e) => handleInput(e.target.value)}
